@@ -77,8 +77,7 @@ RunMCA.Seurat <- function(X, nmcs = 50, features = NULL, reduction.name = "mca",
     data_matrix <- tryCatch(
         as.matrix(GetAssayData(X, layer = slot)),
         error = function(e) {
-            if (grepl("unused argument", conditionMessage(e), fixed = TRUE) &&
-                grepl("layer", conditionMessage(e), fixed = TRUE)) {
+            if (grepl("unused argument.*\\(layer\\s*=", conditionMessage(e))) {
                 as.matrix(GetAssayData(X, slot = slot))
             } else {
                 stop(conditionMessage(e), call. = FALSE)

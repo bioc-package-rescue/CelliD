@@ -1,8 +1,7 @@
 example_mat <- tryCatch(
     as.matrix(GetAssayData(seuratPbmc, assay = "RNA", layer = "counts")),
     error = function(e) {
-        if (grepl("unused argument", conditionMessage(e), fixed = TRUE) &&
-            grepl("layer", conditionMessage(e), fixed = TRUE)) {
+        if (grepl("unused argument.*\\(layer\\s*=", conditionMessage(e))) {
             as.matrix(GetAssayData(seuratPbmc, assay = "RNA", slot = "counts"))
         } else {
             stop(conditionMessage(e), call. = FALSE)
