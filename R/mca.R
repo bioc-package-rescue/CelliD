@@ -81,7 +81,7 @@ RunMCA.Seurat <- function(X, nmcs = 50, features = NULL, reduction.name = "mca",
                 grepl("layer", conditionMessage(e), fixed = TRUE)) {
                 as.matrix(GetAssayData(X, slot = slot))
             } else {
-                stop(e)
+                stop(conditionMessage(e), call. = FALSE)
             }
         }
     )

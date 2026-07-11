@@ -5,7 +5,7 @@ example_mat <- tryCatch(
             grepl("layer", conditionMessage(e), fixed = TRUE)) {
             as.matrix(GetAssayData(seuratPbmc, assay = "RNA", slot = "counts"))
         } else {
-            stop(e)
+            stop(conditionMessage(e), call. = FALSE)
         }
     }
 )
