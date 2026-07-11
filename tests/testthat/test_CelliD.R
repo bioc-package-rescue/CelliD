@@ -1,6 +1,13 @@
 example_mat <- tryCatch(
     as.matrix(GetAssayData(seuratPbmc, assay = "RNA", layer = "counts")),
-    error = function(e) as.matrix(GetAssayData(seuratPbmc, assay = "RNA", slot = "counts"))
+    error = function(e) {
+        if (grepl("unused argument", conditionMessage(e), fixed = TRUE) &&
+            grepl("layer", conditionMessage(e), fixed = TRUE)) {
+            as.matrix(GetAssayData(seuratPbmc, assay = "RNA", slot = "counts"))
+        } else {
+            stop(e)
+        }
+    }
 )
 colnames(example_mat) <- paste0("cell", seq(50))
 rownames(example_mat) <- paste0("gene", seq(2000))

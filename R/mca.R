@@ -76,7 +76,14 @@ RunMCA.Seurat <- function(X, nmcs = 50, features = NULL, reduction.name = "mca",
     DefaultAssay(X) <- assay
     data_matrix <- tryCatch(
         as.matrix(GetAssayData(X, layer = slot)),
-        error = function(e) as.matrix(GetAssayData(X, slot = slot))
+        error = function(e) {
+            if (grepl("unused argument", conditionMessage(e), fixed = TRUE) &&
+                grepl("layer", conditionMessage(e), fixed = TRUE)) {
+                as.matrix(GetAssayData(X, slot = slot))
+            } else {
+                stop(e)
+            }
+        }
     )
     MCA <- RunMCA(X = data_matrix, nmcs = nmcs, features = features)
     geneEmb <- MCA$featuresCoordinates
